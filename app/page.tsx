@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Home() {
   return (
@@ -17,8 +18,8 @@ export default async function Home() {
               <br />Your wellness, simplified.
             </p>
             <div className="flex flex-row gap-x-2">
-              <Button>Ask AI-med</Button>
-              <Button variant="outline">MedScan</Button>
+              <Button asChild><Link href={'/chat'}>Ask AI-med</Link></Button>
+              <Button asChild variant="outline"><Link href={'/scan'}>MedScan</Link></Button>
             </div>
           </div>
 
