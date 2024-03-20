@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default async function Home() {
   return (
     <>
@@ -14,13 +16,10 @@ export default async function Home() {
               predictions with diet recommendations.
               <br />Your wellness, simplified.
             </p>
-
-            <a href="#"
-              className="ds-btn text-lg ds-btn-primary mx-auto lg:mx-0 load-hidden animate-fade-in animate-delay-300">Analyze
-              Image</a>
-            <a href="#"
-              className="ds-btn text-lg ds-btn-primary mx-auto lg:mx-0 load-hidden animate-fade-in animate-delay-300">Disease
-              Prediction</a>
+            <div className="flex flex-row gap-x-2">
+              <Button>Ask AI-med</Button>
+              <Button variant="outline">MedScan</Button>
+            </div>
           </div>
 
           <div className={`relative overflow-hidden h-[50vh] md:h-[60vh] lg:static lg:h-auto`}
