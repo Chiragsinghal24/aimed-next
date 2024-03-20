@@ -82,3 +82,5 @@ export default function Footer() {
     </div>
   </footer>
 }
+
+//this is the updated footer in the next footer fucntion
