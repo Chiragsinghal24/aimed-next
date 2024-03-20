@@ -7,18 +7,15 @@ import { useUser } from "@clerk/nextjs";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Instagram, Phone } from "lucide-react";
-import { Label } from "./ui/label";
+import { Download, FileIcon, Instagram, Phone } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner"
 import {
   Form,
   FormControl,
@@ -29,6 +26,9 @@ import {
 } from "@/components/ui/form";
 import useUserDetails from "@/hooks/use-user-details";
 import { useEffect } from "react";
+import { Card, CardHeader, CardTitle } from "./ui/card";
+import Image from "next/image";
+import Link from "next/link";
 
 const formSchema = z.object({
   weight: z.string().optional(),
@@ -56,9 +56,20 @@ const formSchema = z.object({
 
 export function UserProfile() {
   const { user } = useUser();
-  const { loading, userDetails, updateUserDetails } = useUserDetails(
-    user?.emailAddresses?.at(0)?.emailAddress.replace('@','') as unknown as string
+  const {
+    loading,
+    userDetails,
+    updateUserDetails,
+    setReport,
+    setPrescription,
+    reports,
+    prescriptions,
+  } = useUserDetails(
+    user?.emailAddresses
+      ?.at(0)
+      ?.emailAddress.replace("@", "") as unknown as string
   );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,7 +91,6 @@ export function UserProfile() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await updateUserDetails(values);
-      toast("Profile updated successfully")
     } catch (err) {
       console.log(err);
     }
@@ -218,30 +228,33 @@ export function UserProfile() {
               name="income"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Earning</FormLabel>
-                  <FormControl>
-                    <Select {...field}>
+                  <FormLabel>Annual Income</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your annual income" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="lt_3l">
-                            Less than Rs. 3,00,000
-                          </SelectItem>
-                          <SelectItem value="bw_3l_5l">
-                            Rs. 3,00,000 - Rs. 5,00,000
-                          </SelectItem>
-                          <SelectItem value="bw_5l_10l">
-                            Rs. 5,00,000 - Rs. 10,00,000
-                          </SelectItem>
-                          <SelectItem value="gt_10l">
-                            More than Rs. 10,00,000
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+
+                    <SelectContent>
+                      <SelectItem value="lt_3l">
+                        Less than Rs. 3,00,000
+                      </SelectItem>
+                      <SelectItem value="bw_3l_5l">
+                        Rs. 3,00,000 - Rs. 5,00,000
+                      </SelectItem>
+                      <SelectItem value="bw_5l_10l">
+                        Rs. 5,00,000 - Rs. 10,00,000
+                      </SelectItem>
+                      <SelectItem value="gt_10l">
+                        More than Rs. 10,00,000
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -251,8 +264,34 @@ export function UserProfile() {
           <h2 className="text-lg font-medium">
             Medical History (Past reports)
           </h2>
-          <Input name="report" className="mt-2" type="file" accept="image/*" />
+          <Input
+            name="report"
+            className="mt-2"
+            type="file"
+            onChange={(e) => {
+              if (e.target.files) {
+                setReport(e.target.files[0]);
+              }
+            }}
+          />
           {/* already uploaded files will come here */}
+          <div className="flex my-2 gap-2 flex-wrap">
+            {reports?.map((report, index) => (
+              <Link href={report.url.href} key={index} className="cursor-pointer relative aspect-square">
+                <Image
+                  src={report.preview.href}
+                  alt={report.preview.pathname}
+                  width={100}
+                  height={100}
+                  className="object-cover my-auto"
+                />
+                <Download
+                  className="absolute bottom-2 left-1/2 bg-white p-0.5 rounded transform -translate-x-1/2 -translate-y-1/2"
+                  size={24}
+                />
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="mt-6">
           <h2 className="text-lg font-medium">Prescriptions</h2>
@@ -261,9 +300,30 @@ export function UserProfile() {
             name="prescription"
             className="mt-2"
             type="file"
-            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files) {
+                setPrescription(e.target.files[0]);
+              }
+            }}
           />
           {/* already uploaded files will come here */}
+          <div className="flex my-2 gap-2 flex-wrap">
+            {prescriptions?.map((prescription, index) => (
+              <Link href={prescription.url.href} key={index} className="cursor-pointer relative aspect-square">
+                <Image
+                  src={prescription.preview.href}
+                  alt={prescription.preview.pathname}
+                  width={100}
+                  height={100}
+                  className="object-cover my-auto"
+                />
+                <Download
+                  className="absolute bottom-2 left-1/2 bg-white p-0.5 rounded transform -translate-x-1/2 -translate-y-1/2"
+                  size={24}
+                />
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="mt-6">
           <h2 className="text-lg font-medium">Social</h2>
@@ -330,7 +390,9 @@ export function UserProfile() {
           />
         </div>
         <div className="mt-6">
-          <Button disabled={loading} className="btn btn-primary">Update</Button>
+          <Button disabled={loading} className="btn btn-primary">
+            Update
+          </Button>
         </div>
       </form>
     </Form>

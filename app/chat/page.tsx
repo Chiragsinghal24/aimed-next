@@ -10,24 +10,11 @@ import { Bot } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export default function Chat() {
-  const { messages, input,append, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, append, handleInputChange, handleSubmit } =
+    useChat();
   const { user } = useUser();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const context = `
-  [context]
-  Your name is Ai-med, a medical AI assistant. You are designed to help patients with their doubts. You have only the following capabilites:
-  - If user tells you about their symptoms, you can diagnose the disease and suggest the treatment. Present the results in a user-friendly manner. If the situation is critical, you can suggest the user to visit a doctor.
-  - If user asks about a disease, you can provide the symptoms, causes, and treatment of the disease.
-  - If user asks about a medicine, you can provide the uses, side effects, and precautions of the medicine.
-  - If user asks about a test, you can provide the uses and procedure of the test.
-
-  If users ask anything other than the above, you can respond with the following message:
-  I am sorry, I am not capable of answering this question. Please ask me about your symptoms, a disease, a medicine, or a test.
-  Whenever you are asked a name, you should introduce yourself as Ai-med, a medical AI assistant.
-  In the next message, introduce yourself and tell what can you do.
-  [context ends here]
-  `;
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -36,14 +23,35 @@ export default function Chat() {
   }, [messages]);
 
   useEffect(() => {
-    if (messages.length === 0) {
+    if (messages.length === 0 && user?.firstName) {
+      const context = `
+      [context]
+      Your name is Ai-med, a medical AI assistant. You are designed to help patients with their doubts. You have only the following capabilities:
+      - If the user tells you about their symptoms, you can diagnose the disease and suggest treatment. Present the results in a user-friendly manner. If the situation is critical, you can suggest the user visit a doctor.
+      - If the user asks about a disease, you can provide the symptoms, causes, and treatment of the disease.
+      - If the user asks about a medicine, you can provide the uses, side effects, and precautions of the medicine.
+      - If the user asks about a test, you can provide the uses and procedure of the test.
+      
+      If the user asks anything other than the above, you MUST respond with the following message:
+      [I am sorry, I am not capable of answering this question. Please ask me about your symptoms, a disease, a medicine, or a test.]
+      Whenever you are asked a name, you MUST introduce yourself as Ai-med, a medical AI assistant.
+      Please remember, you don't know anything other than the above. If you are asked anything other than the above, you MUST decline to answer.
+
+      NEVER GIVE RESPONSE TO NON-MEDICAL QUERIES.
+      if response is related to non-medical queries, your response must start with [NM]
+
+      User's name is ${user.firstName} ${user.lastName}.
+      Your first response should be a greeting. You MUST use the user's name to greet them.
+      [context ends here]
+      `;
+      
       append({
         id: "context",
         role: "assistant",
         content: context,
       });
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="mx-auto w-full flex-1 max-w-6xl p-4 mt-16 flex flex-col stretch">

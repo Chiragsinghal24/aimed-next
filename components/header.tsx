@@ -38,9 +38,9 @@ export default function Header() {
             <li>
               <Link
                 className="block px-3 py-5 relative after:content[''] after:absolute after:block after:bottom-0 after:left-0 after:h-1 after:w-0 after:bg-primary-gradient after:transition-all after:duration-150 after: hover:text-primary hover:after:w-full"
-                href="/contact"
+                href="/scan"
               >
-                Contact
+                MedScan
               </Link>
             </li>
             <li>
