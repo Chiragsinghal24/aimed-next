@@ -51,4 +51,4 @@ export { Avatar, AvatarImage, AvatarFallback }
 
 
 
-//updating the avatar.tsx in the portal of the user profile.
+//updating the avatar.tsx in the portal of the user profile
