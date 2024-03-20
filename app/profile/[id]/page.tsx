@@ -1,6 +1,6 @@
 import { CustomUserProfile } from "@/components/custom-user-profile";
 
-export default function({params}:{
+export default function CustomProfile({params}:{
   params: {
     id: string;
   }

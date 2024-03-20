@@ -77,7 +77,7 @@ export default async function Home() {
                 A Personalized drug combination recommendations based on individual health profiles and medical
                 conditions. By analyzing user data and
                 medical history, the system suggests the most effective and suitable medication combinations tailored to
-                each user's specific needs.
+                each user&apos;s specific needs.
               </p>
             </div>
 
