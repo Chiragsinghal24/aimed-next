@@ -1,5 +1,5 @@
 export default function Footer() {
-  return <footer className="bg-neutral-800 text-white p-10 md:p-[5em]">
+  return <footer className="bg-neutral-800 z-50 text-white p-10 md:p-[5em]">
     <div className="max-w-screen-xl mx-auto flex flex-wrap justify-between gap-3 lg:items-stretch lg:gap-0">
       <div className="w-full flex flex-col justify-between items-center gap-5 lg:w-1/5 lg:pr-5">
         <nav aria-labelledby="social-media-links">

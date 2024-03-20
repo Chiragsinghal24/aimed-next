@@ -1,25 +1,12 @@
-import { Account, Client, Storage, ID, Databases} from 'appwrite';
+import { Client, Storage, ID, Databases} from 'appwrite';
 
 const client = new Client();
 
 client
     .setEndpoint('https://cloud.appwrite.io/v1')
-    .setProject('65f32c6539fecb40765c');
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!) // Your Appwrite Project ID;
 
-const account = new Account(client);
 const storage = new Storage(client);
 const db = new Databases(client);
 
-const getCurrentUser = async () => {
-    const promise = account.get();
-    const result = promise
-        .then((user) => {
-            return user;
-        })
-        .catch(() => {
-            return null;
-        });
-    return result;
-};
-
-export { account, client , getCurrentUser, storage, ID, db};
+export {client, storage, ID, db};
