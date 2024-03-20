@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Download, FileIcon, Instagram, Phone } from "lucide-react";
+import { Download, Instagram, Phone } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/form";
 import useUserDetails from "@/hooks/use-user-details";
 import { useEffect } from "react";
-import { Card, CardHeader, CardTitle } from "./ui/card";
 import Image from "next/image";
 import Link from "next/link";
 
