@@ -31,8 +31,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const formSchema = z.object({
-  weight: z.string().optional(),
-  height: z.string().optional(),
+  weight: z.number().min(0).max(500).optional(),
+  height: z.number().min(0).max(300).optional(),
   vision: z
     .string()
     .regex(/^[0-9]{1,2}\/[0-9]{1,2}$/)
