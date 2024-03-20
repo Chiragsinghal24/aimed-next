@@ -31,8 +31,8 @@ import useUserDetails from "@/hooks/use-user-details";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  weight: z.number().min(0).max(500).optional(),
-  height: z.number().min(0).max(300).optional(),
+  weight: z.string().optional(),
+  height: z.string().optional(),
   vision: z
     .string()
     .regex(/^[0-9]{1,2}\/[0-9]{1,2}$/)
